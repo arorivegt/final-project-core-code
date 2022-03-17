@@ -1,12 +1,12 @@
 const express = require('express')
 const cors = require('cors');
-const { dbConnection } = require('../database/config');
+const { createToDoTable } = require('../database/config');
 
 class Server {
 
     constructor(){
         this.app = express()
-        this.port = process.env.PORT;
+        this.port = 30000;
         
         //connect to database
         this.connectDataBase();
@@ -18,7 +18,7 @@ class Server {
 
 
     async connectDataBase(){
-        await dbConnection();
+        await createToDoTable();
     }
 
     
