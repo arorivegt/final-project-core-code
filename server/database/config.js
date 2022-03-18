@@ -15,7 +15,7 @@ const dbConnection = async()   => {
     }
 }
 
-const createToDoTable = async() =>  {
+const createToDo = async() =>  {
     const db = await dbConnection();
     await db.exec(`CREATE TABLE IF NOT EXISTS TODO (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +27,21 @@ const createToDoTable = async() =>  {
     await db.close()
 }
 
-const insertToDoTable = async(task_name, description = "", is_complete = false) => {
+const selectAllToDo = async() => {
+    const db = await dbConnection();
+    const result = await db.all(`SELECT * FROM TODO`)
+    await db.close()
+    return result;
+}
+
+const selectToDoById = async(id) => {
+    const db = await dbConnection();
+    const result = await db.get(`SELECT * FROM TODO WHERE id = ?`, id)
+    await db.close()
+    return result;
+}
+
+const insertToDo = async(task_name, description = "", is_complete = false) => {
     const db = await dbConnection();
     const result = await db.run(`INSERT INTO TODO(task_name, description, is_complete)  
                                  VALUES (?,?,?)`, task_name,description,is_complete)
@@ -35,8 +49,35 @@ const insertToDoTable = async(task_name, description = "", is_complete = false) 
     return result;
 }
 
+const updateToDo = async(id, task_name, description = "", is_complete = false) => {
+    const db = await dbConnection();
+    const result = await db.run(`UPDATE TODO SET task_name = ?, description = ?, is_complete= ?  
+                                WHERE id = ?`, task_name,description,is_complete,id)
+    await db.close()
+    return result;
+}
+
+const deleteAllToDo = async() => {
+    const db = await dbConnection();
+    const result = await db.run(`DELETE FROM TODO`)
+    await db.close()
+    return result;
+}
+
+const deleteDBToDoById = async(id) => {
+    const db = await dbConnection();
+    const result = await db.run(`DELETE FROM TODO WHERE id = ?`, id)
+    await db.close()
+    return result;
+}
+
 module.exports = {
     dbConnection,
-    createToDoTable,
-    insertToDoTable
+    createToDo,
+    selectAllToDo,
+    selectToDoById,
+    insertToDo,
+    updateToDo,
+    deleteAllToDo,
+    deleteDBToDoById
 }

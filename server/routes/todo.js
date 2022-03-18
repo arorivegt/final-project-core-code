@@ -1,5 +1,12 @@
 const { Router } = require('express');
-const { getToDO, postToDo } = require('../controllers/todo.controller');
+const { 
+    getToDo,
+    getToDOById,
+    postToDo, 
+    putToDo,
+    deleteToDo,
+    deleteToDoById
+} = require('../controllers/todo.controller');
 
 const router = Router();
 
@@ -8,26 +15,21 @@ const router = Router();
  */
 
 //get all toDo
-router.get('/', getToDO);
+router.get('/', getToDo);
 
 //get a toDo by id - public
-router.get('/:id', getToDO);
+router.get('/:id', getToDOById);
 
 //create toDo - private - everyone with a valid token
 router.post('/', postToDo);
 
 //update toDo - private - everyone with a valid token
-router.put('/', ( req, res) => {
-    res.json({
-        msj : "put"
-    })
-});
+router.put('/:id', putToDo);
 
-//deelete toDo - private - everyone with a valid token and if it's admin
-router.delete('/', ( req, res) => {
-    res.json({
-        msj : "delete"
-    })
-});
+//delete All toDo - private - everyone with a valid token and if it's admin
+router.delete('/', deleteToDo);
+
+//delete toDo by id - private - everyone with a valid token and if it's admin
+router.delete('/:id', deleteToDoById);
 
 module.exports = router;

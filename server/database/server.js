@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors');
-const { createToDoTable } = require('./config');
+const { createToDo } = require('./config');
 require('dotenv').config();
 
 class Server {
@@ -25,7 +25,11 @@ class Server {
 
 
     async createToDoTable(){
-        await createToDoTable();
+        try {
+            await createToDo();
+        } catch (error) {
+            throw new error("Error when try to create ToDo Table")
+        }
     }
 
     
