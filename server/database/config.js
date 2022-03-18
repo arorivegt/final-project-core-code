@@ -16,17 +16,27 @@ const dbConnection = async()   => {
 }
 
 const createToDoTable = async() =>  {
-    const connection = await dbConnection();
-    await connection.exec(`CREATE TABLE IF NOT EXISTS TODO (
-                    id NUMERIC PRIMARY KEY,
+    const db = await dbConnection();
+    await db.exec(`CREATE TABLE IF NOT EXISTS TODO (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                     task_name TEXT,
-                    is_complete NUMERIC
+                    description TEXT,
+                    is_complete NUMERIC DEFAULT 0
                    );
                 `)
+    await db.close()
+}
 
+const insertToDoTable = async(task_name, description = "", is_complete = false) => {
+    const db = await dbConnection();
+    const result = await db.run(`INSERT INTO TODO(task_name, description, is_complete)  
+                                 VALUES (?,?,?)`, task_name,description,is_complete)
+    await db.close()
+    return result;
 }
 
 module.exports = {
     dbConnection,
-    createToDoTable
+    createToDoTable,
+    insertToDoTable
 }
