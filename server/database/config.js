@@ -1,10 +1,11 @@
 const sqlite3 = require("sqlite3")
 const {open} = require("sqlite")
+require('dotenv').config();
 
 const dbConnection = async()   => {
     try{
         const db = await open({
-            filename: 'database.db',
+            filename: process.env.DATABASE,
             driver: sqlite3.Database
         })
 
