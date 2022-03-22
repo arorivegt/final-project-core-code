@@ -14,3 +14,6 @@ npm start
 ```
 .env.example change this file to .env
 ```
+## Open 
+
+[http://localhost:3000](http://localhost:3000)
