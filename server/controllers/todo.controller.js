@@ -13,7 +13,7 @@ const getToDo = async (req = request, res = response) => {
     try {
         const result = await selectAllToDo()
         console.log(result);
-        return res.status(400).json(result)
+        return res.status(200).json(result)
     } catch (error) {
         throw new Error(error)
     }
@@ -25,7 +25,7 @@ const getToDOById = async (req = request, res = response) => {
         const { id } = req.params;
         const result = await selectToDoById(id)
         console.log(result);
-        return res.status(400).json(result)
+        return res.status(200).json(result)
     } catch (error) {
         throw new Error(error)
     }
@@ -43,7 +43,7 @@ const postToDo = async (req = request, res = response) => {
 
         const resultInsert = await insertToDo(task_name, description, false)
         console.log(resultInsert);
-        return res.status(400).json({
+        return res.status(200).json({
             msj: `ToDO insert successfully ${resultInsert.lastID}`
         })
     } catch (error) {
@@ -57,7 +57,7 @@ const putToDo = async (req = request, res = response) => {
         const { task_name, description, is_complete} = req.body;
         const resultUpdate = await updateToDo(id, task_name, description, is_complete)
         console.log(resultUpdate);
-        return res.status(400).json({
+        return res.status(200).json({
             msj: `ToDO udated successfully ${resultUpdate.lastID}`
         })
     } catch (error) {
@@ -75,7 +75,7 @@ const deleteToDo = async (req = request, res = response) => {
                 msj: `Delete All Todo unsuccessfully`
             })
         }
-        return res.status(400).json({
+        return res.status(200).json({
             msj: `All ToDO delete successfully`
         })
     } catch (error) {
@@ -95,7 +95,7 @@ const deleteToDoById = async (req = request, res = response) => {
                 msj: `Delete Todo ${id} unsuccessfully`
             })
         }
-        return res.status(400).json({
+        return res.status(200).json({
             msj: `Delete Todo ${id} successfully`
         })
     } catch (error) {

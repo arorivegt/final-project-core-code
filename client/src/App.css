@@ -1,5 +1,5 @@
 * {
-  box-sizing: border-box;
+  /*box-sizing: border-box;*/
   margin: 0;
   padding: 0;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
@@ -52,7 +52,7 @@ h1 {
 }
 
 .todo-description {
-  width: 81.5% !important;
+  width: 83.5% !important;
 }
 
 .todo-input::placeholder {

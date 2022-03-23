@@ -4,12 +4,23 @@ import Todo from "./Todo";
 import { useEffect } from "react";
 import axios from 'axios';
 
+
 function TodoList() {
 
   const [todos, setTodos] = useState([]);
   
   useEffect(() => {
   }, [todos]);
+
+  const getToDoList = () => {
+    fetch('http://localhost:5000/api/todo/', {
+      method: 'GET',
+    })
+    .then( resp => resp.json() )
+    .then(data => { setTodos(data); })
+    .catch( console.warn );
+  }
+
 
   const addTodo = (todo) => {
     if (!todo.task_name || /^\s*$/.test(todo.task_name)) {
@@ -21,27 +32,15 @@ function TodoList() {
       'description':todo.description, 
       'is_complete':todo.is_complete
     };
-    axios.post('http://localhost:5000/api/todo/', 
-        todoNew, {
-        headers: {'Content-Type': 'application/json'}
-        })
-    .then(response => console.log(response))
+    axios.post('http://localhost:5000/api/todo/', todoNew)
+    .then(response => {
+      //console.log(response) 
+      getToDoList(); 
+    })
     .catch(error => {
       console.error('There was an error!', error);
     });
 
-    fetch('http://localhost:5000/api/todo/', {
-        method: 'GET',
-        headers: {
-            'Content-TYpe':'application/json'
-        }
-    })
-    .then( resp => resp.json() )
-    .then(data => {
-      const newTodos = data;
-      setTodos(newTodos);
-    })
-    .catch( console.warn );
 
   };
 
@@ -60,64 +59,59 @@ function TodoList() {
       return;
     }
 
+    console.log(newValue);
     const todoNew = { 
       'task_name':newValue.task_name, 
       'description':newValue.description, 
       'is_complete':newValue.is_complete
     };
     axios.put(`http://localhost:5000/api/todo/${todoId}`, 
-        todoNew, {
-        headers: {'Content-Type': 'application/json'}
-        })
-    .then(response => console.log(response))
-    .catch(error => {
-      console.error('There was an error!', error);
-    });
-
-    fetch('http://localhost:5000/api/todo/', {
-        method: 'GET',
-        headers: {
-            'Content-TYpe':'application/json'
-        }
+      todoNew, {
+      headers: {'Content-Type': 'application/json'}
     })
-    .then( resp => resp.json() )
-    .then(data => {
-      const newTodos = data;
-      setTodos(newTodos);
+    .then(response => { 
+      //console.log(response)
+      getToDoList();
     })
-    .catch( console.warn );
+    .catch(error => { console.error('There was an error!', error); });
 
   };
 
   const removeTodo = (id) => {
 
     axios.delete(`http://localhost:5000/api/todo/${id}`)
-    .then(response => console.log(response))
+    .then(response => {
+      //console.log(response)
+      getToDoList(); 
+    })
     .catch(error => {
       console.error('There was an error!', error);
     });
 
-    fetch('http://localhost:5000/api/todo/', {
-        method: 'GET',
-        headers: {
-            'Content-TYpe':'application/json'
-        }
-    })
-    .then( resp => resp.json() )
-    .then(data => {
-      const newTodos = data;
-      setTodos(newTodos);
-    })
   };
 
   const completeTodo = (id) => {
-    let updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        todo.is_complete = !todo.is_complete;
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+    
+    let todoComplete = todos.filter(todo =>  todo.id === id );
+
+    if (todoComplete.length <= 0)
+      return;
+
+    const todoNew = { 
+      'task_name':todoComplete[0].task_name, 
+      'description':todoComplete[0].description, 
+      'is_complete':!todoComplete[0].is_complete
+    };
+    axios.put(`http://localhost:5000/api/todo/${id}`, 
+      todoNew, {
+      headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => {
+      //console.log(response) 
+      getToDoList();
+    })
+    .catch(error => { console.error('There was an error!', error); });
+   
   };
 
   return (
