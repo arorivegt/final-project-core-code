@@ -5,7 +5,7 @@ I create a todo project using ReactJS, Nodejsm SQLite
 ```sh
 npm install
 ```
-## Run Project
+## Run Project on folder client and server 
 ```
 npm start
 ```
@@ -16,4 +16,5 @@ npm start
 ```
 ## Open 
 
-[http://localhost:3000](http://localhost:3000)
+- [FrontEnd ToDo](http://localhost:3000)
+- [Api GET, POST, PUT, DELETE](http://localhost:5000/api/todo)

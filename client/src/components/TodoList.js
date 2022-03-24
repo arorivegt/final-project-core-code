@@ -10,14 +10,15 @@ function TodoList() {
   const [todos, setTodos] = useState([]);
   
   useEffect(() => {
-  }, [todos]);
+    getToDoList();
+  }, []);
 
   const getToDoList = () => {
     fetch('http://localhost:5000/api/todo/', {
       method: 'GET',
     })
     .then( resp => resp.json() )
-    .then(data => { setTodos(data); })
+    .then( data => { setTodos(data); })
     .catch( console.warn );
   }
 
