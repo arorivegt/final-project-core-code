@@ -8,7 +8,6 @@ const dbConnection = async()   => {
             filename: process.env.DATABASE,
             driver: sqlite3.Database
         })
-
         console.log('Databse is connected');
         return db;
     }catch( err ){
